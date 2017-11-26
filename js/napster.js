@@ -139,27 +139,21 @@
 
     const autoPlayNext = () => {
         const audio = document.getElementsByTagName('audio');
-        //unbind existing listeners (reset listeners)
-        // $('audio').unbind('ended');
-        
+
         //Create listeners
         for (var i = 0; i < audio.length; i++) {
+            // $('audio[i]').replaceWith($('audio[i]').clone());
             audioListeners(i);
         }
 
         function audioListeners(i) {
+            //Remove any event handlers..if they exist.  Reset*
+            $(audio[i]).off();
 
-            // audio[i].removeEventListener('ended', function() { 
-            //   this.duration = 0; 
-            //   this.pause();
-            //   audio[i+1].play();
-            // }, false);
-
-            audio[i].addEventListener('ended', function() { 
-              audio[i].duration = 0; 
-              audio[i].pause();
+            // Add listener
+            $(audio[i]).on('ended', function() {
               audio[i+1].play();
-            }, false);
+            });
         }
     };
 
@@ -168,18 +162,16 @@
             <div class="container">
                 <div class="row">
                     <div class="image col-4">
-                        <img src="http://direct.rhapsody.com/imageserver/v2/albums/${albumId}/images/150x150.jpg"> 
+                        <img src="http://direct.rhapsody.com/imageserver/v2/albums/${albumId}/images/150x150.jpg">
                     </div>
                     <div class="content col-8">
                         <a class="header">${trackName}</a>
                         <div class="meta">${album}</div>
-                        <div class="meta">${artist}</div>  
+                        <div class="meta">${artist}</div>
                     </div>
                 </div>
             </div>
         `;
-
-
 
         if (isDimmed) {
             html += `<div class="ui dimmer transition visible active" style="display: block !important;"></div>`;
@@ -193,7 +185,7 @@
             <div class="container">
                 <div class="row">
                     <div class="pl-image col-2">
-                        <img src="http://direct.rhapsody.com/imageserver/v2/albums/${albumId}/images/150x150.jpg"> 
+                        <img src="http://direct.rhapsody.com/imageserver/v2/albums/${albumId}/images/150x150.jpg">
                     </div>
                     <div class="col-10">
                         <a class="header">${trackName}</a>
@@ -307,6 +299,7 @@
            runSearchQuery();
         }
     });
+
 
 
 })();
