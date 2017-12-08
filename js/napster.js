@@ -139,20 +139,32 @@
 
     const autoPlayNext = () => {
         const audio = document.getElementsByTagName('audio');
+        // const $audio = $('audio');
 
         //Create listeners
         for (var i = 0; i < audio.length; i++) {
             // $('audio[i]').replaceWith($('audio[i]').clone());
             audioListeners(i);
+
+            // pauses all other tracks when another track is played.
+            $(audio[i]).on('play', function(event) {
+                for (var y = 0; y < audio.length; y++) {
+                    if (audio[y] != event.target) {
+                       audio[y].pause(); 
+                       audio[y].currentTime = 0; 
+                    }  
+                }
+            });
         }
 
         function audioListeners(i) {
             //Remove any event handlers..if they exist.  Reset*
             $(audio[i]).off();
 
-            // Add listener
+            // Add listener to auto play next track
             $(audio[i]).on('ended', function() {
               audio[i+1].play();
+              audio[i].currentTime = 0; 
             });
         }
     };
@@ -260,6 +272,17 @@
                             playlistTrack.innerHTML = getPlaylistCardMarkup(album, artist, trackName, previewURL, albumId, trackId);
                             playlist.appendChild(playlistTrack)
                             console.log('adding track --', PlaylistManager.tracks)
+
+                            // const $trackAudio = $('audio:last');
+                            // console.log($trackAudio);
+
+                            // $trackAudio.on('play', function() {
+                            //     const $audios = $('audios');
+                            //     for (audio of audios) {
+                            //         audio.stop();
+                            //     }
+                            // });                           
+   
 
 
                         }
